@@ -1,4 +1,4 @@
-from pybuilder.core import use_plugin, init, Author
+from pybuilder.core import use_plugin, init, task, Author
 
 use_plugin("python.core")
 use_plugin("python.unittest")
@@ -14,9 +14,10 @@ name = "succubus"
 summary = "Lightweight Python module for daemonizing"
 default_task = "publish"
 version = '1.0'
-authors = [Author('Stefan Neben', "stefan.neben@immobilienscout24.de"),
-           Author('Stefan Nordhausen', "stefan.nordhausen@immobilienscout24.de"),
-          ]
+authors = [
+    Author('Stefan Neben', "stefan.neben@immobilienscout24.de"),
+    Author('Stefan Nordhausen', "stefan.nordhausen@immobilienscout24.de"),
+]
 url = 'https://github.com/ImmobilienScout24/succubus'
 description = open("README.rst").read()
 license = 'Apache License 2.0'
@@ -25,6 +26,7 @@ license = 'Apache License 2.0'
 @init
 def set_properties(project):
     pass
+
 
 @init
 def set_properties(project):
@@ -42,9 +44,11 @@ def set_properties(project):
 def set_properties_for_teamcity_builds(project):
     import os
     project.set_property('teamcity_output', True)
-    project.version = '%s-%s' % (project.version, os.environ.get('BUILD_NUMBER', 0))
+    project.version = '%s-%s' % (project.version,
+                                 os.environ.get('BUILD_NUMBER', 0))
     project.default_task = ['clean', 'install_build_dependencies', 'publish']
-    project.set_property('install_dependencies_index_url', os.environ.get('PYPIPROXY_URL'))
+    project.set_property('install_dependencies_index_url',
+                         os.environ.get('PYPIPROXY_URL'))
     project.set_property('copy_resources_target', '$dir_dist')
     project.get_property('copy_resources_glob').extend(['setup.cfg'])
     project.get_property('distutils_commands').append('bdist_rpm')
