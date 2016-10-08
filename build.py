@@ -52,3 +52,9 @@ def set_properties_for_teamcity_builds(project):
     project.set_property('copy_resources_target', '$dir_dist')
     project.get_property('copy_resources_glob').extend(['setup.cfg'])
     project.get_property('distutils_commands').append('bdist_rpm')
+
+
+@task
+@depends('prepare')
+def build_directory(project):
+    print project.expand_path("$dir_dist")
